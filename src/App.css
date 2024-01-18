@@ -7,14 +7,9 @@
 }
 
 #root {
-  /* background-color: #282c34; */
   background-color: white;
   height: 100vh;
   width: 100%;
-  /* flex-direction: column;
-  align-items: center;
-  justify-content: center; */
-  /* overflow: hidden; */
 }
 
 .App-header {
@@ -232,22 +227,24 @@
   font-weight: 700;
 }
 
+.sell-plus-Box:hover {
+  cursor: pointer;
+}
+
 .apiDataMainDiv {
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  margin-top: 20px;
+  width: calc(100% - 350px);
+  margin: 20px 175px 0px 175px;
 }
 
 .apiDataDiv {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: center;
-  /* margin: 0px 10px 10px 5px; */
-  /* background-color: #23e5db; */
-  /* margin: 0px 175px 0px 175px; */
+  justify-content: space-between;
   width: 100%;
   height: auto;
 }
@@ -257,7 +254,7 @@
   height: 430px;
   /* background-color: #3a77ff; */
   /* margin: 40px 10px 10px 10px; */
-  margin: 40px 10px 0px 10px;
+  margin: 40px 0px 0px 0px;
   border-radius: 1%;
   border: 1px solid rgba(0, 0, 0, 0.2);
   transition: box-shadow 0.1s ease;
@@ -380,6 +377,7 @@
 .clearfix {
   display: block;
 }
+
 a {
   color: #278a95;
   text-decoration: none;
@@ -558,4 +556,314 @@ span.validate-tooltip {
   color: #002f34;
   -webkit-transition: all 0.3s linear;
   transition: all 0.3s linear;
+}
+
+/* Postadd Page//////// */
+
+.postAddBody {
+  width: 100%;
+  height: 100vh;
+}
+
+.postHeader {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  height: 65px;
+  padding: 8px 16px;
+  background-color: #F7F8F8;
+  border-bottom: 0.5px solid rgba(123, 123, 123, 0.1);
+  box-shadow: 0 0.5px 15px 0px rgba(150, 150, 150, 0.2);
+}
+
+.postHeader>img {
+  width: 65px;
+  height: 25px;
+  padding-left: 20px;
+}
+
+.postHeader>.leftArrow {
+  width: 19px;
+  height: 19px;
+}
+
+.postHeader>.leftArrow:hover {
+  cursor: pointer;
+}
+
+.postHeading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  font-weight: 700;
+  font-family: 'Roboto', sans-serif;
+  width: 100%;
+  height: 60px;
+  padding: 16px 0;
+}
+
+.postDetailMainDiv {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: calc(100% - 350px);
+  margin: 10px 175px 0px 175px;
+  height: auto;
+  border: 1px solid black;
+}
+
+.headingBox {
+  width: 100%;
+  padding: 16px 0;
+  display: flex;
+  /* align-items: center; */
+  justify-content: flex-start;
+  flex-direction: column;
+}
+
+.headingBox>.div1 {
+  padding: 0 16px;
+  font-size: 20px;
+  font-weight: 700;
+  font-family: 'Roboto', sans-serif;
+}
+
+.headingBox>.div2 {
+  padding: 16px 16px 0;
+}
+
+.headingBox>.div2>span {
+  padding-right: 20px;
+}
+
+.headingBox>.div2>.span1st {
+  font-size: 12px;
+}
+
+.headingBox>.div2>.span2nd {
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: underline;
+}
+
+.itemsBox {
+  width: 100%;
+  padding: 32px 0px 0px;
+  border-top: 1px solid black;
+  display: flex;
+  flex-direction: column;
+}
+
+.itemsBox>.box1heading {
+  width: 100%;
+  padding: 0px 32px 8px;
+  font-size: 20px;
+  font-weight: 700;
+  font-family: 'Roboto', sans-serif;
+}
+
+.itemsBox>.box2title {
+  padding: 0 32px;
+  margin: 0 0 16px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.box2title>.title {
+  margin-bottom: 3px;
+  font-size: 15px;
+  font-family: 'Roboto', sans-serif;
+}
+
+.box2title>div {
+  margin-bottom: 5px;
+  width: 100%;
+  border: 1px solid black;
+  border-radius: 5px;
+}
+
+.box2title>div>label>input {
+  width: 99%;
+  height: 46px;
+  font-size: 16px;
+  margin-left: 12px;
+  font-family: 'Roboto', sans-serif;
+  outline: none;
+  border: none;
+}
+
+.box2title>.text {
+  font-size: 12px;
+  font-family: 'Roboto', sans-serif;
+}
+
+.box3Description {
+  padding: 0 32px;
+  margin: 0 0 16px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.box3Description>.descriptionTitle {
+  margin-bottom: 3px;
+  font-size: 15px;
+  font-family: 'Roboto', sans-serif;
+}
+
+.box3Description>div {
+  width: 100%;
+  margin-bottom: 5px;
+  border: 1px solid black;
+  border-radius: 5px;
+}
+
+.box3Description>div>label>textarea {
+  width: 99%;
+  height: 138px;
+  font-size: 16px;
+  margin-left: 12px;
+  padding: 8px 40px 8px 0;
+  font-family: 'Roboto', sans-serif;
+  outline: none;
+  border: none;
+  resize: none;
+
+}
+
+.box3Description>.descriptionText {
+  font-size: 12px;
+  font-family: 'Roboto', sans-serif;
+}
+
+.line {
+  margin: 0 0 16px;
+  padding: 8px 32px 0;
+  width: 100%;
+  height: 9px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+}
+
+.priceHeading {
+  width: 100%;
+  height: 38px;
+  margin: 0 0 16px;
+  padding: 0 32px 8px;
+  font-size: 20px;
+  font-weight: 700;
+  font-family: 'Roboto', sans-serif;
+}
+
+.box3price {
+  margin: 0 0 16px;
+  padding: 0 32px;
+}
+
+.box3price>.title {
+  margin-bottom: 3px;
+  font-size: 15px;
+  font-family: 'Roboto', sans-serif;
+}
+
+.box3price>div {
+  width: 100%;
+  margin-bottom: 5px;
+  border: 1px solid black;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  z-index: 10;
+}
+
+.box3price>div>span {
+  margin: 12px 0;
+  padding: 0 12px;
+}
+
+.box3price>div>label>input {
+  width: 99%;
+  height: 46px;
+  font-size: 16px;
+  margin-left: 12px;
+  font-family: 'Roboto', sans-serif;
+  outline: none;
+  border: none;
+}
+
+.box4image {
+  padding: 0 32px;
+  margin: 0 0 16px;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+justify-content: flex-start;
+  align-items: center;
+}
+
+.box4image>label {
+  width: 100%;
+  margin: 0 0 16px;
+  padding: 0 32px;
+}
+
+.imgtext {
+  padding: 0 32px;
+  font-size: 12px;
+  font-family: 'Roboto', sans-serif;
+}
+
+.ImgInputBox {
+  display: flex;
+margin: 0 10px 10px 0;
+}
+
+.ImgInputBox>label {
+  width: 115px;
+  height: 115px;
+  border: 0.5px solid black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ImgInputBox>label:hover {
+  cursor: pointer;
+}
+
+.ImgInputBox>label>img {
+  width: 100%;
+  height: 100%;
+}
+
+.ImgInputBox>label>.imageIcon {
+  width: 30px;
+  height: 30px;
+}
+
+.ImgInputBox>input {
+  display: none;
+  visibility: hidden;
+}
+
+.postBtnBox {
+  margin: 0 0 2px;
+  padding: 0 32px;
+}
+
+.postBtnBox>.postBtn {
+  width: 140px;
+  height: 50px;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 16px;
+  font-size: 17px;
+  font-weight: 700;
+  font-family: 'Roboto', sans-serif;
+  border-radius: 5%;
 }

@@ -39,7 +39,7 @@ const navigate =useNavigate()
 <div className='login-Btn-Box' onClick={()=>navigate('/register')}><a href='#'>Login</a></div>
 
 {/* 5 Sell Button */}
-<div className='sell-plus-Box'>
+<div className='sell-plus-Box' onClick={() => navigate('/post')}>
 <FontAwesomeIcon icon={faPlus} className='plus-icon' />
 <span>SELL</span>
 

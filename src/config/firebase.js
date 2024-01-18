@@ -2,6 +2,8 @@ import { initializeApp } from "firebase/app";
 import { getFirestore, collection, addDoc, getDocs, doc, setDoc } from "firebase/firestore";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 import { fetchDataFromApi } from "./api";
+import { getStorage } from "firebase/storage";
+
 
 const firebaseConfig = {
     apiKey: "AIzaSyDE4pdbec9IvIznwdieZ1a4exQQ4LmafcQ",
@@ -16,6 +18,8 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
+const storage = getStorage(app);
+
 
 // Auth Register
 
@@ -42,7 +46,7 @@ export async function addDataToFireStore() {
     try {
         const apiData = await fetchDataFromApi();
         console.log(apiData.products)
-        apiData.products.map(async (dataitems) =>{
+        apiData.products.map(async (dataitems) => {
             const docRef = await addDoc(collection(db, "Products"), dataitems);
             console.log(docRef)
             console.log("Document written with ID: ", docRef.id);
@@ -57,9 +61,9 @@ export async function addDataToFireStore() {
 
 // Get Data From FireStore
 
-export const getDataFromFirestore = async () =>{
+export const getDataFromFirestore = async () => {
 
-  const querySnapshot = await getDocs(collection(db, "Products"));
+    const querySnapshot = await getDocs(collection(db, "Products"));
     const products = []
 
     querySnapshot.forEach((doc) => {
@@ -79,3 +83,42 @@ getDataFromFirestore()
     .catch((error) => {
         console.error("Error fetching data from Firestore:", error);
     });
+
+// Add olx post data to Firestore
+
+export const addOlxPostDataToFirestore = async (productInfo, images) => {
+    // try {
+    //     const docRef = await addDoc(collection(db, "Products"), productData);
+
+    //     console.log("Document written with ID: ", docRef.id);
+    // } catch (e) {
+    //     console.error("Error adding document: ", e);
+
+    //  }
+    try {
+        // Upload images to storage
+        const imageUrls = await Promise.all(
+          images.map(async (image, index) => {
+            if (image) {
+              const storageRef = storage.ref(`images/product_${index + 1}`);
+              const imageFile = await fetch(image).then((res) => res.blob());
+              await storageRef.put(imageFile);
+              return storageRef.getDownloadURL();
+            }
+            return null;
+          })
+        );
+    
+ await addDoc(collection(db, "Products"), {
+    title: productInfo.title,
+    description: productInfo.description,
+    price: productInfo.price,
+    images: imageUrls,
+  });
+
+        console.log('Data uploaded to Firebase');
+      } catch (error) {
+        console.error('Error uploading data to Firebase:', error);
+      }
+    };
+
