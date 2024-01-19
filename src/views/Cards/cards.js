@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faHeart, faStar } from '@fortawesome/free-solid-svg-icons'
-import Header from '../Header/Header'
+import Header from '../Header/header'
 import { addDataToFireStore, getDataFromFirestore } from '../../config/firebase'
 
 

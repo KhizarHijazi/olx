@@ -1,5 +1,5 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import Header from '../views/Header/Header'
+import Header from '../views/Header/header.js'
 import Showdata from '../views/Cards/cards';
 import Register from '../views/Auth/register';
 import Login from '../views/Auth/login';
