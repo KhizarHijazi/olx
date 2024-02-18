@@ -1,12 +1,24 @@
 import { useNavigate } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCar, faCity,faMagnifyingGlass, faAngleDown,faPlus} from '@fortawesome/free-solid-svg-icons'
+import { faCar, faCity,faMagnifyingGlass, faAngleDown,faPlus,faCartShopping} from '@fortawesome/free-solid-svg-icons'
+import { useDispatch } from 'react-redux'
+
+
 import olxBlue from '../../assets/OLX-Logo.png'
 import olxBlack from '../../assets/OLX-Symbol.png'
+import profileIcon from '../../assets/iconProfilePicture.png'
+import { logout } from '../../config/firebase'
+import { updateCart } from '../../redux/cartSlice'
 
 
-function Header(){
+function Header({user}){
 const navigate =useNavigate()
+const dispatch = useDispatch()
+
+function addToCart(){
+  dispatch(updateCart('Khizar Hijazi'))
+
+}
 
     return (
         <div className="App-header">
@@ -18,7 +30,7 @@ const navigate =useNavigate()
       
       <div className='navbar'>
 {/* 1 Image  */}
-  <img src={olxBlack} alt='olx'/>
+  <img src={olxBlack} alt='olx' onClick={()=> navigate('/mapapi')}/>
 
 {/* 2 Search Bar Small */}
 
@@ -36,11 +48,26 @@ const navigate =useNavigate()
 </div>
 
 {/* 4 Login Button */}
-<div className='login-Btn-Box' onClick={()=>navigate('/register')}><a href='#'>Login</a></div>
+{user ? 
+  <div className='login-Btn-Box' onClick={logout}><a href='#'>Logout</a></div>
+  :
+  <div className='login-Btn-Box' onClick={()=>navigate('/login')}><a href='#'>Login</a></div>
+}
+
+{/* 5 Cart/Prof */}
+{user ? 
+  <div className='cart-Box' onClick={addToCart} >
+    <FontAwesomeIcon icon={faCartShopping} className='cart-icon' />
+    </div>
+  :
+  <div className='profileIcon-Box' ><img src={profileIcon}/></div>
+}
+
 
 {/* 5 Sell Button */}
-<div className='sell-plus-Box'>
-<FontAwesomeIcon icon={faPlus} className='plus-icon' onClick={()=> navigate('/post')} />
+
+<div className='sell-plus-Box' onClick={()=> navigate('/post')}>
+<FontAwesomeIcon icon={faPlus} className='plus-icon'  />
 <span>SELL</span>
 
 </div>

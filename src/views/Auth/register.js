@@ -54,7 +54,7 @@ function Register() {
                                     <input id="rememberMe" type="checkbox" />
                                     <label for="rememberMe">Remember Me</label>
                                 </div>
-                                <a class="forgot pull-right" href="#">Forgot Password?</a>
+                                <a class="forgot pull-right" onClick={()=> navigate('/reset')}>Forgot Password?</a>
                             </div>
                         </div>
                         <div class="signup-wrapper text-center">

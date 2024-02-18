@@ -1,8 +1,10 @@
 import { initializeApp } from "firebase/app";
-import { getFirestore, collection, addDoc, getDocs, doc, setDoc } from "firebase/firestore";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import { getFirestore, collection, addDoc, getDocs, doc, setDoc, getDoc } from "firebase/firestore";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, sendPasswordResetEmail,signOut } from "firebase/auth";
 import { fetchDataFromApi } from "./api";
-import { getStorage } from "firebase/storage";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 
 const firebaseConfig = {
@@ -17,8 +19,10 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
-const auth = getAuth(app);
+export const auth = getAuth(app);
 const storage = getStorage(app);
+
+
 
 
 // Auth Register
@@ -40,23 +44,86 @@ export async function login(userInfo) {
     alert('You have successfully logged in')
 }
 
+// On Auth State Changed
+// export function OnAuth(){
+// const navigate = useNavigate()
+
+//     useEffect (() => {
+//         onAuthStateChanged(auth, (user) => {
+//     if (user) {
+//       navigate('/')
+//     //   const uid = user.uid;
+//     } else {
+//       navigate('/login')
+//     }
+//   });
+//     },[])
+
+// }
+
+// Sign out
+export async function logout() {
+    try {
+        await signOut(auth)
+        alert('You have logged out')
+    } catch (error) {
+        alert(error.message);
+
+    }
+}
+
+export async function forgotPassword({email}) {
+    try{
+        await sendPasswordResetEmail(auth, email)
+        alert('Plz Check Your email to reset your password')
+    }catch(error){
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        alert(errorMessage)
+    }
+     
+
+}
+
+
+
+
+
 // Add Data To FireStore
 
+// export async function addDataToFireStore() {
+//     try {
+//         const apiData = await fetchDataFromApi();
+//         console.log(apiData.products)
+//         apiData.products.map(async (dataitems) => {
+
+//             const docRef = await addDoc(collection(db, "Products"), dataitems);
+//             console.log(docRef)
+//             console.log("Document written with ID: ", dataitems.id);
+//         })
+//         console.log("All documents added to Firestore");
+//     } catch (e) {
+//         console.error("Error adding document: ", e);
+//     }
+// }
 export async function addDataToFireStore() {
     try {
         const apiData = await fetchDataFromApi();
-        console.log(apiData.products)
+        // console.log(apiData.products);
+
         apiData.products.map(async (dataitems) => {
-            const docRef = await addDoc(collection(db, "Products"), dataitems);
-            console.log(docRef)
-            console.log("Document written with ID: ", docRef.id);
-        })
+            const docRef = doc(db, "Products", `${dataitems.id}`);
+            // console.log("docRef: ", docRef);
+
+            await setDoc(docRef, dataitems);
+            console.log("Document written with ID: ", dataitems.id);
+        });
+
         console.log("All documents added to Firestore");
     } catch (e) {
         console.error("Error adding document: ", e);
     }
 }
-
 
 
 // Get Data From FireStore
@@ -68,7 +135,7 @@ export const getDataFromFirestore = async () => {
 
     querySnapshot.forEach((doc) => {
         // doc.data() is never undefined for query doc snapshots
-        console.log(doc.id, " => ", doc.data());
+        // console.log(doc.id, " => ", doc.data());
         products.push({ id: doc.id, ...doc.data() })
     })
 
@@ -76,49 +143,55 @@ export const getDataFromFirestore = async () => {
 
 }
 
-getDataFromFirestore()
-    .then((products) => {
-        console.log("Products from Firestore:", products);
-    })
-    .catch((error) => {
-        console.error("Error fetching data from Firestore:", error);
-    });
+export const getSingleProduct = async (adId) => {
+    try {
+        const docRef = doc(db, "Products", adId);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
 
-// Add olx post data to Firestore
+            return { ...docSnap.data(), id: adId }
+        } else {
+            return {}
+        }
+
+    } catch (error) {
+        console.error("Error adding document: ", error);
+
+    }
+
+}
 
 export const addOlxPostDataToFirestore = async (productInfo, images) => {
-    // try {
-    //     const docRef = await addDoc(collection(db, "Products"), productData);
 
-    //     console.log("Document written with ID: ", docRef.id);
-    // } catch (e) {
-    //     console.error("Error adding document: ", e);
-
-    //  }
     try {
-        // Upload images to storage
-        const imageUrls = await Promise.all(
-          images.map(async (image, index) => {
-            if (image) {
-              const storageRef = storage.ref(`images/product_${index + 1}`);
-              const imageFile = await fetch(image).then((res) => res.blob());
-              await storageRef.put(imageFile);
-              return storageRef.getDownloadURL();
-            }
-            return null;
-          })
-        );
-    
- await addDoc(collection(db, "Products"), {
-    title: productInfo.title,
-    description: productInfo.description,
-    price: productInfo.price,
-    images: imageUrls,
-  });
+
+        const submissionId = Date.now().toString();
+        console.log('submisionid', submissionId)
+        const imagesUrls = await Promise.all(images.map(async (image, index) => {
+
+            const storageRef = ref(storage, `images/product_${index + 1}`);
+            const snapshot = await uploadBytes(storageRef, image);
+            console.log('Uploaded a blob or file!');
+            const downloadURL = await getDownloadURL(snapshot.ref);
+            return downloadURL;
+
+        }))
+
+        const postObject = {
+            title: productInfo.title,
+            description: productInfo.description,
+            price: productInfo.price,
+            images: imagesUrls,
+            submissionId: submissionId,
+
+        }
+        console.log(postObject)
+        await addDoc(collection(db, "Products"), postObject);
+
 
         console.log('Data uploaded to Firebase');
-      } catch (error) {
+    } catch (error) {
         console.error('Error uploading data to Firebase:', error);
-      }
-    };
+    }
+};
 

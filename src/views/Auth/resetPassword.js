@@ -2,17 +2,20 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { login } from "../../config/firebase";
 import olxBlack from '../../assets/OLX-Symbol.png'
+import { forgotPassword } from "../../config/firebase";
 
 
-function Login() {
+function ResetPassword() {
     const navigate = useNavigate()
     const [email, setEmail] = useState()
     const [password, setPassword] = useState()
 
     async function loginfunction() {
         try {
-            await login({ email, password })
-            navigate('/')
+            await forgotPassword({email})
+            setTimeout(()=>{
+                navigate('/login')
+            },2000)
         } catch (error) {
             alert(error.message)
         }
@@ -36,25 +39,13 @@ function Login() {
                         <div id="formvalidate">
 
                             <div class="input-group">
-                                <input type="email" onChange={(e) => setEmail(e.target.value)} placeholder="Registered Email" />
+                                <input type="email" onChange={(e) => setEmail(e.target.value)} placeholder="Your registered Email" />
                                 <span class="lighting"></span>
                             </div>
-                            <div class="input-group">
-                                <input type="password" onChange={(e) => setPassword(e.target.value)} placeholder="Password" />
-                                <span class="lighting"></span>
-                            </div>
-                            <button onClick={loginfunction}>Login</button>
-
-                            <div class="clearfix supporter">
-                                <div class="pull-left remember-me">
-                                    <input id="rememberMe" type="checkbox" />
-                                    <label for="rememberMe">Remember Me</label>
-                                </div>
-                                <a class="forgot pull-right" onClick={()=> navigate('/reset')}>Forgot Password?</a>
-                            </div>
+                            <button onClick={loginfunction}>Send</button>
                         </div>
                         <div class="signup-wrapper text-center">
-                            <div>Don't have an accout?<span onClick={() => navigate('/register')} className="text-primary">Sign up</span>
+                            <div>Dear User! sent to your email request to create a new password.<span onClick={(e) => navigate('/login')} className="text-primary">Login?</span>
                             </div>
                         </div>
 
@@ -68,4 +59,4 @@ function Login() {
     </>
 }
 
-export default Login
+export default ResetPassword

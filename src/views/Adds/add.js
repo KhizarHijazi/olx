@@ -19,7 +19,8 @@ const navigate = useNavigate()
   
     const handleImageUpload = (index, event) => {
       const newImages = [...images];
-      newImages[index] = URL.createObjectURL(event.target.files[0]);
+      newImages[index] = event.target.files[0];
+      
       setImages(newImages);
     };
   
@@ -30,8 +31,12 @@ const navigate = useNavigate()
     const handleFormSubmit = (event) => {
       event.preventDefault();
       addOlxPostDataToFirestore(productInfo, images);
-
-
+      setImages(Array(20).fill(null));
+    setProductInfo({
+        title: '',
+        description: '',
+        price: '',
+    });
 
       console.log("Uploading all images:", images);
       console.log("Product Info:", productInfo);
@@ -66,6 +71,7 @@ const navigate = useNavigate()
         <div className='box2title'>
             <span className='title'>Ad title</span>
             <div><label> <input
+          required='fill all required fields'
           type="text"
           value={productInfo.title}
           onChange={(e) => handleInputChange('title', e.target.value)}/>
@@ -100,7 +106,7 @@ const navigate = useNavigate()
         <div className='ImgInputBox' key={index}>
           <label htmlFor={`imageInput${index}`}>
           
-          {image ? <img src={image} alt={`Product ${index + 1}`} /> : <FontAwesomeIcon icon={faImage} className='imageIcon' />}
+          {image ? <img src={URL.createObjectURL(image)} alt={`Product ${index + 1}`} /> : <FontAwesomeIcon icon={faImage} className='imageIcon' />}
 
           </label>
             <input 
