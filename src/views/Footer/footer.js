@@ -9,8 +9,8 @@ import AppGallery from '../../assets/footeri-box-icons/iconAppGallery_noinline.6
 function Footer(){
 
 
-    return <>
-    <div className="footerMain">
+    return <div className='footerContainer'>
+<div className="footerMain">
     <div className="footer">
         <div className="categoriesBox">
             <span>POPULAR CATEGORIES</span>
@@ -77,7 +77,7 @@ function Footer(){
     </div>
     </div>
 
-    </>
+    </div>
 }
 
 export default Footer
