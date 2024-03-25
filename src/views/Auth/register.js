@@ -1,6 +1,5 @@
-import { useState } from "react";
+import { useState , useEffect} from "react";
 import { useNavigate } from "react-router-dom";
-import { register } from "../../config/firebase";
 import olxBlack from '../../assets/OLX-Symbol.png'
 
 function Register() {
@@ -9,10 +8,28 @@ function Register() {
     const [email, setEmail] = useState()
     const [password, setPassword] = useState()
 
+// useEffect(()=>{
+// signup()
+
+// },[])
     async function signup() {
         try {
-            await register({ fullname, email, password })
-            navigate('/login')
+            const response = await fetch('http://localhost:3000/users/signup', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ fullname, email, password }),
+
+            });
+            console.log(response)
+            const data = await response.text()
+            console.log(data)
+            if (response.ok) {
+                navigate('/login');
+            } else {
+                throw new Error('Registration failed');
+            }
         } catch (error) {
             alert(error.message)
         }
@@ -33,7 +50,7 @@ function Register() {
                             <img src={olxBlack} />
                         </div>
 
-                        <div  id="formvalidate">
+                        <div id="formvalidate">
 
                             <div class="input-group">
                                 <input onChange={(e) => setFullname(e.target.value)} placeholder="Your Fullname" />
@@ -54,7 +71,7 @@ function Register() {
                                     <input id="rememberMe" type="checkbox" />
                                     <label for="rememberMe">Remember Me</label>
                                 </div>
-                                <a class="forgot pull-right" onClick={()=> navigate('/reset')}>Forgot Password?</a>
+                                <a class="forgot pull-right" onClick={() => navigate('/reset')}>Forgot Password?</a>
                             </div>
                         </div>
                         <div class="signup-wrapper text-center">

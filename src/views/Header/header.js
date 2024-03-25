@@ -7,7 +7,6 @@ import { useDispatch } from 'react-redux'
 import olxBlue from '../../assets/OLX-Logo.png'
 import olxBlack from '../../assets/OLX-Symbol.png'
 import profileIcon from '../../assets/iconProfilePicture.png'
-import { logout } from '../../config/firebase'
 import { updateCart } from '../../redux/cartSlice'
 
 
@@ -49,7 +48,7 @@ function addToCart(){
 
 {/* 4 Login Button */}
 {user ? 
-  <div className='login-Btn-Box' onClick={logout}><a href='#'>Logout</a></div>
+  <div className='login-Btn-Box' onClick={'#'}><a href='#'>Logout</a></div>
   :
   <div className='login-Btn-Box' onClick={()=>navigate('/login')}><a href='#'>Login</a></div>
 }

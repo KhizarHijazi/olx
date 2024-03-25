@@ -11,7 +11,6 @@ import Postadd from '../views/Adds/add';
 import Details from '../views/Detail Page/detailpage';
 import Footer from '../views/Footer/footer';
 import Glmap from '../components/map';
-import ResetPassword from '../views/Auth/resetPassword';
 import MyComponent from '../components/mapApi';
 
 const router = createBrowserRouter([
@@ -40,10 +39,7 @@ const router = createBrowserRouter([
       path: "/login",
       element: <Login />,
     },
-    {
-      path : '/reset',
-      element: <ResetPassword/>,
-    },
+   
     {
       path: "/post",
       element: <Postadd />,

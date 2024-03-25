@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { login } from "../../config/firebase";
 import olxBlack from '../../assets/OLX-Symbol.png'
 
 
@@ -9,10 +8,25 @@ function Login() {
     const [email, setEmail] = useState()
     const [password, setPassword] = useState()
 
-    async function loginfunction() {
+    async function login() {
         try {
-            await login({ email, password })
-            navigate('/')
+            const response = await fetch('http://localhost:3000/users/login', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email, password }),
+
+            });
+            console.log(response)
+            const data = await response.text()
+            // console.log(data)
+            if (response.ok) {
+                alert('you have successfully logged in')
+                navigate('/');
+            } else {
+                throw new Error('login failed');
+            }
         } catch (error) {
             alert(error.message)
         }
@@ -43,14 +57,14 @@ function Login() {
                                 <input type="password" onChange={(e) => setPassword(e.target.value)} placeholder="Password" />
                                 <span class="lighting"></span>
                             </div>
-                            <button onClick={loginfunction}>Login</button>
+                            <button onClick={login}>Login</button>
 
                             <div class="clearfix supporter">
                                 <div class="pull-left remember-me">
                                     <input id="rememberMe" type="checkbox" />
                                     <label for="rememberMe">Remember Me</label>
                                 </div>
-                                <a class="forgot pull-right" onClick={()=> navigate('/reset')}>Forgot Password?</a>
+                                <a class="forgot pull-right" onClick={() => navigate('/reset')}>Forgot Password?</a>
                             </div>
                         </div>
                         <div class="signup-wrapper text-center">
